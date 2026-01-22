@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grupo AA – Una luz en mi camino</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #0b1c2d;
+      color: white;
+      overflow: hidden;
+    }
+
+    /* LOGO */
+    .fondo {
+      position: fixed;
+      top: 8%;
+      left: 50%;
+      width: 180px;
+      height: 180px;
+      background: url("alcoholicos-anonimos-logo-png_seeklogo-6138.png") no-repeat center;
+      background-size: contain;
+      opacity: 0.35;
+      transform: translateX(-50%);
+      z-index: -1;
+    }
+
+    /* CONTENIDO */
+    .contenido {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .caja {
+      width: 100%;
+      max-width: 360px;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #4da3ff;
+      margin-bottom: 20px;
+    }
+
+    .boton {
+      display: block;
+      margin: 10px auto;
+      padding: 14px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: white;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .maps { background: #4285F4; }
+    .whatsapp { background: #25D366; }
+    .horarios-btn { background: #1e90ff; font-weight: bold; }
+
+    .horarios {
+      display: none;
+      margin-top: 15px;
+      background: rgba(255,255,255,0.1);
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    /* BOT */
+    #bot-burbuja {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #1e90ff;
+      color: white;
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    #bot-chat {
+      display: none;
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      width: 260px;
+      background: #102a43;
+      border-radius: 12px;
+      padding: 15px;
+    }
+
+    #bot-chat button {
+      width: 100%;
+      margin-top: 8px;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+
+    #bot-respuesta {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    #bot-respuesta {
+  transition: opacity 0.5s ease;
+  opacity: 0;
+}
+
+#bot-respuesta.mostrar {
+  opacity: 1;
+}
+
+  /* Animación suave para los mensajes del bot */
+#bot-respuesta {
+  opacity: 0;               /* empieza invisible */
+  transition: opacity 0.5s ease; /* transición de medio segundo */
+}
+
+#bot-respuesta.mostrar {
+  opacity: 1;               /* se hace visible */
+}
+
+ /* Animación suave para los mensajes del bot */
+#bot-respuesta {
+  opacity: 0;               
+  max-height: 0;           /* evita que el espacio salte */
+  overflow: hidden;        /* oculta el contenido mientras no aparece */
+  transition: opacity 0.5s ease, max-height 0.5s ease;
+}
+
+#bot-respuesta.mostrar {
+  opacity: 1;
+  max-height: 500px; /* suficiente para que se vea todo el mensaje */
+}
+ </style>
+</head>
+
+<body>
+
+<div class="fondo"></div>
+
+<div class="contenido">
+  <div class="caja">
+    <h1>Grupo de AA<br>Una luz en mi camino</h1>
+
+    <button class="boton horarios-btn" onclick="toggleHorarios()">🕒 Ver horarios</button>
+
+    <div class="horarios">
+      <p><strong>Horarios del grupo</strong></p>
+      <p>Lunes a Sábado: 8:00 PM – 9:30 PM</p>
+      <p>Domingo: Cerrado</p>
+    </div>
+
+    <a class="boton maps" href="https://maps.app.goo.gl/CkVj6bCxg8EmCzt8A" target="_blank">
+      📍 Ver ubicación
+    </a>
+
+    <a class="boton whatsapp" href="https://wa.me/5218117285695" target="_blank">
+      💬 Hablar por WhatsApp
+    </a>
+  </div>
+</div>
+
+<div id="bot-burbuja">💬</div>
+
+<div id="bot-chat">
+  <p><strong>👋 Hola</strong><br>¿Cómo puedo ayudarte?</p>
+  <button onclick="botRespuesta('requisitos')">📋 Requisitos</button>
+  <button onclick="botRespuesta('costos')">💲 Costos</button>
+  <button onclick="botRespuesta('nosotros')">👥 Sobre Nosotros</button> 
+  <div id="bot-respuesta"></div>
+</div>
+
+<script>
+function toggleHorarios() {
+  const h = document.querySelector('.horarios');
+  h.style.display = h.style.display === "block" ? "none" : "block";
+}
+
+// Mini bot abrir/cerrar
+const burbuja = document.getElementById("bot-burbuja");
+const chat = document.getElementById("bot-chat");
+
+burbuja.onclick = () => {
+  chat.style.display = chat.style.display === "block" ? "none" : "block";
+};
+
+// Función principal del mini bot
+function botRespuesta(tipo) {
+  const r = document.getElementById("bot-respuesta");
+
+  // Limpiar mensaje anterior y quitar animación
+  r.classList.remove("mostrar");
+  r.innerHTML = "";
+
+  let contenido = "";
+
+  if (tipo === "requisitos") {
+  contenido = `
+    <p><strong>📋 Requisitos</strong></p>
+    <p>El único requisito para ser miembro de AA es el deseo de dejar de beber.</p>
+   `;
+ }
+
+  if (tipo === "costos") {
+  contenido = `
+    <p><strong>💲 Costos</strong></p>
+    <p>AA no tiene honorarios ni cuotas.<br>
+    Nos mantenemos con nuestras propias contribuciones.</p>
+   `;
+ }
+
+  if (tipo === "nosotros") {
+    contenido = `
+      <p><strong>👥 Sobre Nosotros</strong></p>
+      <p>AA es una comunidad de hombres y mujeres que comparten su experiencia, fortaleza y esperanza para resolver su problema común y ayudar a otros a recuperarse del alcoholismo.</p>
+    `;
+  }
+
+  // Colocar el contenido
+  r.innerHTML = contenido;
+
+  // Aplicar animación suave
+  setTimeout(() => {
+    r.classList.add("mostrar");
+  }, 50);
+}
+</script>
+
+</body>
+</html>

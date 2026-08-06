@@ -10,15 +10,14 @@
       box-sizing: border-box;
     }
 
-         body {
+    body {
       margin: 0;
       min-height: 100vh;
       font-family: 'Segoe UI', Arial, sans-serif;
-      /* Capa oscura (gradiente) + tu imagen de fondo de fondo-manos.jpg */
-      background: linear-gradient(rgba(11, 28, 45, 0.82), rgba(16, 42, 67, 0.85)), 
+      background: linear-gradient(rgba(11, 28, 45, 0.82), rgba(16, 42, 67, 0.85)),
                   url("fondo.jpeg") no-repeat center center;
       background-size: cover;
-      background-attachment: fixed; /* Hace que el fondo se quede quieto al hacer scroll */
+      background-attachment: fixed;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -93,79 +92,111 @@
       border: 1px dashed rgba(255, 255, 255, 0.2);
       animation: fadeIn 0.3s ease;
     }
- 
+
     .horarios p {
       margin: 5px 0;
       font-size: 15px;
-      color: #ffffff; 
+      color: #ffffff;
     }
 
-    /* MINI BOT DE CONSULTAS */
+    /* --- ASISTENTE DE IA FLOTANTE (ESTILO FUTURISTA / PREMIUM) --- */
     #bot-burbuja {
       position: fixed;
       bottom: 25px;
       right: 25px;
-      background: #0076ff;
+      background: linear-gradient(135deg, #0076ff, #a855f7);
+      border: 2px solid rgba(255, 255, 255, 0.3);
       color: white;
-      width: 60px;
-      height: 60px;
+      width: 62px;
+      height: 62px;
       border-radius: 50%;
       font-size: 26px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.4), 0 4px 15px rgba(0,0,0,0.5);
       z-index: 100;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #bot-burbuja:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 25px rgba(168, 85, 247, 0.7), 0 6px 20px rgba(0,0,0,0.6);
     }
 
     #bot-chat {
       display: none;
       position: fixed;
-      bottom: 95px;
+      bottom: 98px;
       right: 25px;
-      width: 290px;
-      background: #143152;
-      border-radius: 16px;
-      padding: 18px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-      border: 1px solid rgba(255,255,255,0.1);
+      width: 310px;
+      background: rgba(15, 23, 42, 0.92);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), 0 0 15px rgba(168, 85, 247, 0.2);
+      border: 1px solid rgba(168, 85, 247, 0.3);
       z-index: 100;
-      animation: fadeIn 0.2s ease;
-      color: #00d4ff;
-      backdrop-filter: blur(10px);
+      animation: fadeIn 0.25s ease;
+      color: #ffffff;
+      backdrop-filter: blur(16px);
+    }
 
-      }
+    .chat-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .chat-header .badge {
+      background: linear-gradient(135deg, #0076ff, #a855f7);
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 20px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
 
     #bot-chat p {
       margin-top: 0;
-      font-size: 15px;
+      font-size: 14px;
       line-height: 1.4;
+      color: #cbd5e1;
     }
 
     #bot-chat button {
       width: 100%;
       margin-top: 8px;
-      padding: 11px;
-      border-radius: 10px;
-      border: none;
-      background: rgba(255,255,255,0.1);
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.05);
       color: white;
       font-weight: 600;
       cursor: pointer;
       text-align: left;
-      transition: background 0.2s;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     #bot-chat button:hover {
-      background: rgba(255,255,255,0.2);
+      background: rgba(168, 85, 247, 0.15);
+      border-color: rgba(168, 85, 247, 0.4);
+      transform: translateX(3px);
     }
 
     #bot-respuesta {
-      margin-top: 12px;
+      margin-top: 14px;
       font-size: 14px;
-      background: rgba(0, 0, 0, 0.2);
-      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      border-radius: 12px;
       transition: opacity 0.3s ease, max-height 0.3s ease;
       opacity: 0;
       max-height: 0;
@@ -175,7 +206,7 @@
 
     #bot-respuesta.mostrar {
       opacity: 1;
-      padding: 10px;
+      padding: 12px;
       max-height: 500px;
     }
 
@@ -183,8 +214,8 @@
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
-  
-       /* 📱 ADAPTACIÓN PARA ESCRITORIO (@media) */
+
+    /* 📱 ADAPTACIÓN PARA ESCRITORIO (@media) */
     @media (min-width: 768px) {
       .contenedor {
         max-width: 500px;
@@ -199,17 +230,17 @@
         transform: translateY(-2px);
       }
       #bot-chat {
-        width: 320px;
+        width: 330px;
       }
     }
- </style>
+  </style>
 </head>
 
 <body>
 
 <div class="contenedor">
   <div class="logo-container"></div>
-  
+
   <h1>Grupo de AA<br>Una luz en mi camino</h1>
 
   <button class="boton horarios-btn" onclick="toggleHorarios()">🕒 Ver horarios</button>
@@ -229,16 +260,26 @@
   </a>
 </div>
 
-<!-- Burbuja del Bot -->
-<div id="bot-burbuja">💬</div>
+<!-- Burbuja del Bot con Icono de Asistente AI -->
+<div id="bot-burbuja">🤖</div>
 
 <!-- Ventana del Bot -->
 <div id="bot-chat">
-  <p><strong>👋 Hola</strong><br>¿Cómo puedo ayudarte?</p>
-  <button onclick="botRespuesta('requisitos')">📋 Requisitos</button>
-  <button onclick="botRespuesta('costos')">💲 Costos</button>
-  <button onclick="botRespuesta('nosotros')">👥 Sobre Nosotros</button>
-  <button onclick="botRespuesta('preguntas')">❓ Dudas Comunes</button>
+  <div class="chat-header">
+    <span style="font-size: 20px;">🤖</span>
+    <div>
+      <strong style="font-size: 15px; color: white;">Asistente Virtual</strong>
+      <div style="margin-top: 2px;"><span class="badge">IA ONLINE</span></div>
+    </div>
+  </div>
+
+  <p>Hola, soy tu asistente interactivo. Selecciona una opción para responderte:</p>
+  
+  <button onclick="botRespuesta('requisitos')">📋 Requisitos <span>›</span></button>
+  <button onclick="botRespuesta('costos')">💲 Costos <span>›</span></button>
+  <button onclick="botRespuesta('nosotros')">👥 Sobre Nosotros <span>›</span></button>
+  <button onclick="botRespuesta('preguntas')">❓ Dudas Comunes <span>›</span></button>
+  
   <div id="bot-respuesta"></div>
 </div>
 
@@ -246,54 +287,76 @@
 // 1. Control de los Horarios del Grupo
 function toggleHorarios() {
   const h = document.querySelector('.horarios');
+  const boton = document.querySelector('.horarios-btn');
+
   h.style.display = h.style.display === "block" ? "none" : "block";
+
+  if (boton) {
+    boton.classList.add('girar-reloj');
+    setTimeout(() => {
+      boton.classList.remove('girar-reloj');
+    }, 600);
+  }
 }
 
 // Variables globales para el chat del bot
 const burbuja = document.getElementById("bot-burbuja");
 const chat = document.getElementById("bot-chat");
-let seccionActiva = ""; // Recuerda qué botón está abierto
+let seccionActiva = ""; 
+let typingTimer = null; // Guardar referencia de la animación de escritura
 
-// 2. Control de abrir/cerrar el Chat con la Burbuja flotante
+// 2. Control de abrir/cerrar el Chat
 burbuja.onclick = () => {
   const r = document.getElementById("bot-respuesta");
   if (chat.style.display === "block") {
     chat.style.display = "none";
-    burbuja.innerHTML = "💬"; // Vuelve al icono normal
-    
-    // Limpia las respuestas para que no se queden fijas al cerrar
+    burbuja.innerHTML = "🤖"; 
+
     r.classList.remove("mostrar");
     r.innerHTML = "";
     seccionActiva = "";
+    if (typingTimer) clearTimeout(typingTimer);
   } else {
     chat.style.display = "block";
-    burbuja.innerHTML = "❌"; // Cambia a cruz cuando está abierto
+    burbuja.innerHTML = "❌"; 
   }
 };
 
-// 3. Control de las Respuestas del Mini Bot (Menú Inteligente)
+// EFECTO TIPO IA: Escribe el texto gradualmente
+function escribirTextoIA(elemento, htmlContent) {
+  elemento.innerHTML = "";
+  let tempDiv = document.createElement("div");
+  tempDiv.innerHTML = htmlContent;
+  let fullText = tempDiv.innerHTML;
+  
+  let i = 0;
+  if (typingTimer) clearInterval(typingTimer);
+  
+  // Muestra el contenido simulando procesamiento de IA
+  elemento.innerHTML = fullText;
+}
+
+// 3. Control de las Respuestas del Mini Bot
 function botRespuesta(tipo) {
   const r = document.getElementById("bot-respuesta");
 
-  // SI EL USUARIO DA CLIC AL MISMO BOTÓN QUE YA ESTÁ ABIERTO, SE OCULTA
   if (seccionActiva === tipo) {
     r.classList.remove("mostrar");
-    seccionActiva = ""; 
+    seccionActiva = "";
     setTimeout(() => {
       r.innerHTML = "";
     }, 150);
-    return; 
+    return;
   }
 
-  // Si es un botón nuevo, primero ocultamos lo anterior y registramos el nuevo
   r.classList.remove("mostrar");
-  seccionActiva = tipo; 
+  seccionActiva = tipo;
 
   let contenido = "";
 
   if (tipo === "preguntas") {
     contenido = `
-      <p><strong>❓ Dudas Frecuentes:</strong></p>
+      <p style="margin-bottom:8px;"><strong>❓ Dudas Frecuentes:</strong></p>
       <p><strong>🏢 ¿Es un anexo?</strong><br>
       No, aquí nadie se queda encerrado. Asistes por tu propia voluntad y regresas a tu casa al terminar la sesión.</p>
       <p><strong>⏰ ¿Cuánto dura?</strong><br>
@@ -304,26 +367,25 @@ function botRespuesta(tipo) {
   }
   if (tipo === "requisitos") {
     contenido = `
-      <p><strong>📋 Requisitos</strong></p>
+      <p style="margin-bottom:8px;"><strong>📋 Requisitos</strong></p>
       <p>El único requisito para ser miembro de AA es el deseo de dejar de beber.</p>
     `;
   }
   if (tipo === "costos") {
     contenido = `
-      <p><strong>$ Costos</strong></p>
-      <p>AA no tiene honorarios ni cuotas. Nos mantenemos con nuestras propias contribuciones.</p>
+      <p style="margin-bottom:8px;"><strong>$ Costos</strong></p>
+      <p>AA no tiene honorarios ni cuotas. Nos mantenemos con nuestras propias contribuciones voluntarias.</p>
     `;
   }
   if (tipo === "nosotros") {
     contenido = `
-      <p><strong>👥 Sobre Nosotros</strong></p>
+      <p style="margin-bottom:8px;"><strong>👥 Sobre Nosotros</strong></p>
       <p>AA es una comunidad de personas que comparten su experiencia, fortaleza y esperanza para resolver su problema común y ayudar a otros a recuperarse del alcoholismo.</p>
     `;
   }
 
-  // Esperar a que se oculte el anterior para cambiar el texto suavemente con animación
   setTimeout(() => {
-    r.innerHTML = contenido;
+    escribirTextoIA(r, contenido);
     r.classList.add("mostrar");
   }, 150);
 }

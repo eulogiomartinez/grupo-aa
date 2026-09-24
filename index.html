@@ -453,6 +453,9 @@
 </div>
 
 <script>
+  // Arreglo global para almacenar el historial de la conversación y dar memoria a la IA
+  let historialChat = [];
+
   function toggleHorarios() {
     const h = document.querySelector(".horarios");
     if (h) h.style.display = h.style.display === "block" ? "none" : "block";
@@ -499,6 +502,9 @@
     input.disabled = true;
     sendBtn.disabled = true;
 
+    // Guardar mensaje del usuario en el historial
+    historialChat.push({ role: "user", content: mensaje });
+
     // Mensaje temporal de carga
     const botMsgTemp = agregarMensaje("Pensando...", "msg-bot");
 
@@ -508,7 +514,8 @@
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt: mensaje }),
+          // Se envía todo el historial de mensajes al Worker
+          body: JSON.stringify({ messages: historialChat }),
         }
       );
 
@@ -521,14 +528,20 @@
       ) {
         let respuestaTexto = data.candidates[0].content.parts[0].text;
         botMsgTemp.textContent = respuestaTexto.replaceAll("**", "");
+
+        // Guardar la respuesta de la IA en el historial para mantener la memoria
+        historialChat.push({ role: "assistant", content: respuestaTexto });
       } else {
         botMsgTemp.textContent =
           data.error?.message ||
           "Ocurrió un error al consultar la información.";
+        // Si falló la petición, se retira el último mensaje del usuario del historial
+        historialChat.pop();
       }
     } catch (error) {
       botMsgTemp.textContent = "Error de conexión con la red.";
       console.error(error);
+      historialChat.pop();
     } finally {
       input.disabled = false;
       sendBtn.disabled = false;
@@ -547,33 +560,32 @@
     return div;
   }
 
-   function actualizarSaludo() {
-  const hora = new Date().getHours();
-  const elementoSaludo = document.getElementById('texto-saludo');
-  
-  let saludo = "¡Hola! Buenas noches, bienvenido. ¿Cómo te podemos ayudar?";
+  function actualizarSaludo() {
+    const hora = new Date().getHours();
+    const elementoSaludo = document.getElementById('texto-saludo');
 
-  // 6am a 11am (6 a 11)
-  if (hora >= 6 && hora <= 11) {
-    saludo = "¡Hola! Buenos días, bienvenido. ¿Cómo te podemos ayudar?";
-  } 
-  // 12pm a 5pm (12 a 17)
-  else if (hora >= 12 && hora <= 17) {
-    saludo = "¡Hola! Buenas tardes, bienvenido. ¿Cómo te podemos ayudar?";
-  } 
-  // 6pm a 5am (18 a 5)
-  else {
-    saludo = "¡Hola! Buenas noches, bienvenido. ¿Cómo te podemos ayudar?";
+    let saludo = "¡Hola! Buenas noches, bienvenido. ¿Cómo te podemos ayudar?";
+
+    // 6am a 11am
+    if (hora >= 6 && hora <= 11) {
+      saludo = "¡Hola! Buenos días, bienvenido. ¿Cómo te podemos ayudar?";
+    }
+    // 12pm a 5pm
+    else if (hora >= 12 && hora <= 17) {
+      saludo = "¡Hola! Buenas tardes, bienvenido. ¿Cómo te podemos ayudar?";
+    }
+    // 6pm a 5am
+    else {
+      saludo = "¡Hola! Buenas noches, bienvenido. ¿Cómo te podemos ayudar?";
+    }
+
+    if (elementoSaludo) {
+      elementoSaludo.textContent = saludo;
+    }
   }
 
-  if (elementoSaludo) {
-    elementoSaludo.textContent = saludo;
-  }
-}
-
-// Ejecutar al cargar la página
-document.addEventListener('DOMContentLoaded', actualizarSaludo);
-
+  // Ejecutar al cargar la página
+  document.addEventListener('DOMContentLoaded', actualizarSaludo);
 </script>
 
 </body>
